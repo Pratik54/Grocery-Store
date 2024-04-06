@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Profile Page
+{% endblock %}
+
+
+{% block content %}
+    <div class="heading">
+        <h1 class="display-1">
+            Hello
+            <span class="text-muted">@{{user.username}}</span>
+        </h1>
+    </div>
+{% endblock %}

@@ -13,31 +13,34 @@ def index():
 
 @app.route('/login')
 def login():
-    return render_template('user_login.html')
+    return render_template('login.html')
 
 @app.route('/login', methods=['POST'])
 def login_post():
     username = request.form.get('username')
     password = request.form.get('password')
+    user_role = request.form.get('role')
 
     if not username or not password:
         flash('Please fill out all fields')
-        return redirect(url_for('login'))
+        return redirect(url_for('index'))
     
     user = User.query.filter_by(username=username).first()
     
     if not user:
         flash('Username does not exist')
-        return redirect(url_for('login'))
+        return redirect(url_for('index'))
     
     if not check_password_hash(user.passhash, password):
         flash('Incorrect password')
-        return redirect(url_for('login'))
+        return redirect(url_for('index'))
     
     session['user_id'] = user.id
     flash('Login successful')
-    return redirect(url_for('profile'))
-
+    if user_role == 'admin':
+        return redirect(url_for('admin_dash'))
+    else:
+        return redirect(url_for('profile'))
 
 @app.route('/register')
 def register():
@@ -70,7 +73,6 @@ def register_post():
     db.session.add(new_user)
     db.session.commit()
     return redirect(url_for('login'))
-
 
 # ----
 
@@ -174,12 +176,5 @@ def admin_login_post():
 @app.route('/admin_dash')
 @admin_required
 def admin_dash():
-    categories = Category.query.all()
-    category_names = [category.name for category in categories]
-    category_sizes = [len(category.products) for category in categories]
-    return render_template('admin_dash.html', categories=categories, category_names=category_names, category_sizes=category_sizes)
+    return render_template('admin_dash.html')
 
-@app.route('/category/add')
-@admin_required
-def add_category():
-    return render_template('category/add.html')
