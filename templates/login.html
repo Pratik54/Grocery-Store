@@ -41,17 +41,18 @@
 <script>
     document.getElementById('user').addEventListener('change', function() {
         if (this.checked) {
-            document.getElementById('loginBtn').href = "{{ url_for('profile') }}";
+            document.getElementById('loginForm').action = "{{ url_for('login_post') }}";
             document.getElementById('registerBtn').href = "{{ url_for('register') }}";
         }
     });
 
     document.getElementById('admin').addEventListener('change', function() {
         if (this.checked) {
-            document.getElementById('loginBtn').href = "{{ url_for('admin_dash') }}";
+            document.getElementById('loginForm').action = "{{ url_for('admin_login_post') }}";
             document.getElementById('registerBtn').style.display = 'none';
         }
     });
 </script>
+
 
 {% endblock %}
