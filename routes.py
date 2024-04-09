@@ -7,6 +7,19 @@ from datetime import datetime
 import csv
 from uuid import uuid4
 
+@app.route('/')
+def index():
+    return render_template('login.html')
+
+@app.route('/', methods=['POST'])
+def index_post():
+    if request.method == 'POST':
+        # Handle POST request, for example, login authentication
+        return redirect(url_for('login_post'))
+    else:
+        # Render the login form for GET request
+        return render_template('login.html')
+
 @app.route('/login')
 def login():
     return render_template('login.html')
